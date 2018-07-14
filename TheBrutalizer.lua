@@ -972,7 +972,7 @@ function Teemo:Laneclear()
       if tb.Laneclear.R:Value() then
             for i = 1, Game.MinionCount() do
                   local minion = Game.Minion(i)
-                  if minion and minion.team ~= myHero.team and ValidTarget(minion) and MinionsAround(minion.pos, R.radius, 300) + MinionsAround(minion.pos, R.radius, 300 - myHero.team) >= tb.Laneclear.Minions:Value() then
+                  if minion and minion.team ~= myHero.team and ValidTarget(minion) and EnemyMinionsAround(minion.pos, R.radius) >= tb.Laneclear.Minions:Value() then
                         self:Rlogic(minion)
                   end
             end
