@@ -1,3 +1,5 @@
+-- Twisted Fate -> Cho'Gath -> Veigar
+
 --[[
     Load
 ]]
@@ -268,7 +270,39 @@ function SaveWaypoints(enemyList)
             SaveWaypointsSingle(unit)
       end
 end
-      
+
+function VectorPointProjectionOnLineSegment(v1, v2, v)
+	local cx, cy, ax, ay, bx, by = v.x, (v.z or v.y), v1.x, (v1.z or v1.y), v2.x, (v2.z or v2.y)
+      local rL = ((cx - ax) * (bx - ax) + (cy - ay) * (by - ay)) / ((bx - ax) ^ 2 + (by - ay) ^ 2)
+      local pointLine = { x = ax + rL * (bx - ax), y = ay + rL * (by - ay) }
+      local rS = rL < 0 and 0 or (rL > 1 and 1 or rL)
+      local isOnSegment = rS == rL
+      local pointSegment = isOnSegment and pointLine or {x = ax + rS * (bx - ax), y = ay + rS * (by - ay)}
+	return pointSegment, pointLine, isOnSegment
+end
+
+function SquaredDist(Pos1, Pos2)
+	local Pos2 = Pos2 or myHero.pos
+	local dx = Pos1.x - Pos2.x
+	local dz = (Pos1.z or Pos1.y) - (Pos2.z or Pos2.y)
+	return dx^2 + dz^2
+end
+
+function GetMinionCollisionCount(StartPos, EndPos, Width, Target)
+	local Count = 0
+	for i = 1, Game.MinionCount() do
+		local m = Game.Minion(i)
+		if m and not m.isAlly then
+			local w = Width + m.boundingRadius
+			local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, m.pos)
+			if isOnSegment and SquaredDist(pointSegment, m.pos) < w^2 and SquaredDist(StartPos, EndPos) > SquaredDist(StartPos, m.pos) then
+				Count = Count + 1
+			end
+		end
+	end
+	return Count
+end
+
 function ClosestPointOnLineSegment(p, p1, p2)
       local px,pz = p.x, p.z
       local ax,az = p1.x, p1.z
@@ -455,7 +489,7 @@ require "MapPosition"
 --[[
     Localizations
 ]]
-local version = 0.4
+local version = 0.5
 
 local Icon = {
       TB              = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TheBrutalizer.png",
@@ -478,11 +512,17 @@ local Icon = {
       TeemoE          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TeemoE.png",
       TeemoR          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TeemoR.png",
 
-      Vladimir       = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/Vladimir.png",
-      VladimirQ      = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VladimirQ.png",
-      VladimirW      = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VladimirW.png",
-      VladimirE      = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VladimirE.png",
-      VladimirR      = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VladimirR.png",
+      TwistedFate     = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TwistedFate.png",
+      TwistedFateQ    = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TwistedFateQ.png",
+      TwistedFateW    = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TwistedFateW.png",
+      TwistedFateE    = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TwistedFateE.png",
+      TwistedFateR    = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TwistedFateR.png",
+
+      Vladimir        = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/Vladimir.png",
+      VladimirQ       = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VladimirQ.png",
+      VladimirW       = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VladimirW.png",
+      VladimirE       = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VladimirE.png",
+      VladimirR       = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VladimirR.png",
 }
 
 --[[
@@ -878,14 +918,14 @@ function Teemo:SetSpells()
 end
 	
 function Teemo:Config()
-    tbTeemo = MenuElement({id = "tbTeemo", name = "The Brutalizer: v"..version.." [Teemo]", type = MENU, leftIcon = Icon.Teemo})
+      tbTeemo = MenuElement({id = "tbTeemo", name = "The Brutalizer: v"..version.." [Teemo]", type = MENU, leftIcon = Icon.Teemo})
 
-    tbTeemo:MenuElement({id = "Q", name = "Q - Blinding Dart", leftIcon = Icon.TeemoQ, type = MENU})
-    tbTeemo:MenuElement({id = "W", name = "W - Move Quick", leftIcon = Icon.TeemoW, type = MENU})
-    tbTeemo:MenuElement({id = "E", name = "E - Toxic Shot", leftIcon = Icon.TeemoE, type = MENU})
-    tbTeemo:MenuElement({id = "R", name = "R - Noxious Trap", leftIcon = Icon.TeemoR, type = MENU})
+      tbTeemo:MenuElement({id = "Q", name = "Q - Blinding Dart", leftIcon = Icon.TeemoQ, type = MENU})
+      tbTeemo:MenuElement({id = "W", name = "W - Move Quick", leftIcon = Icon.TeemoW, type = MENU})
+      tbTeemo:MenuElement({id = "E", name = "E - Toxic Shot", leftIcon = Icon.TeemoE, type = MENU})
+      tbTeemo:MenuElement({id = "R", name = "R - Noxious Trap", leftIcon = Icon.TeemoR, type = MENU})
 
-    tbTeemo.Q:MenuElement({id = "AA", name = "Only after AA (if in range)", value = true})
+      tbTeemo.Q:MenuElement({id = "AA", name = "Only after AA (if in range)", value = true})
       for i = 1, Game.HeroCount() do
             local enemy = Game.Hero(i)
             if enemy and enemy.team ~= myHero.team then
@@ -893,11 +933,11 @@ function Teemo:Config()
             end
       end
 
-    tbTeemo.W:MenuElement({id = "MS", name = "Only if enemy ms is higher", value = false})
+      tbTeemo.W:MenuElement({id = "MS", name = "Only if enemy ms is higher", value = false})
 
-    tbTeemo.E:MenuElement({id = "", name = "...", type = SPACE})
+      tbTeemo.E:MenuElement({id = "", name = "...", type = SPACE})
 
-    tbTeemo.R:MenuElement({id = "AA", name = "Only after AA (if in range)", value = true})
+      tbTeemo.R:MenuElement({id = "AA", name = "Only after AA (if in range)", value = true})
 end
 
 function Teemo:Tick()
@@ -1043,6 +1083,171 @@ function Teemo:Rlogic(target)
             end
             if target.type == Obj_AI_Minion and GetDistance(target.pos,myHero.pos) <= Rrange then
                   Control.CastSpell(HK_R, target.pos)
+            end
+      end
+end
+
+--[[
+    TwistedFate
+]]
+class "TwistedFate"
+
+function TwistedFate:__init()
+      self:SetSpells()
+      self:Config()
+      function OnTick() self:Tick() end
+end
+
+function TwistedFate:SetSpells()
+      Q = {range = 1450, delay = 0.25, radius = 40, speed = 1000}
+      W = {range = myHero.range + myHero.boundingRadius + 35, red = "redcardlock", blue = "bluecardlock", gold = "goldcardlock", select = "pickacard"}
+      E = {range = 0}
+      R = {range = 0}
+end
+	
+function TwistedFate:Config()
+      tbTwistedFate = MenuElement({id = "tbTwistedFate", name = "The Brutalizer: v"..version.." [Twisted Fate]", type = MENU, leftIcon = Icon.TwistedFate})
+
+      tbTwistedFate:MenuElement({id = "Q", name = "Q - Wild Cards", leftIcon = Icon.TwistedFateQ, type = MENU})
+      tbTwistedFate:MenuElement({id = "W", name = "W - Pick a Card", leftIcon = Icon.TwistedFateW, type = MENU})
+      tbTwistedFate:MenuElement({id = "E", name = "E - Stacked Deck", leftIcon = Icon.TwistedFateE, type = MENU})
+      tbTwistedFate:MenuElement({id = "R", name = "R - Destiny", leftIcon = Icon.TwistedFateR, type = MENU})
+
+      tbTwistedFate.Q:MenuElement({id = "W", name = "Priorize W", value = true})
+
+      tbTwistedFate.W:MenuElement({id = "S", name = "Blue/Red slider clear [?]", value = 80, min = 0, max = 100, tooltip = "Blue under and Red over MP%"})
+
+      tbTwistedFate.E:MenuElement({id = "", name = "...", type = SPACE})
+
+      tbTwistedFate.R:MenuElement({id = "W", name = "Auto Gold Card", value = true})
+end
+
+function TwistedFate:Tick()
+      if myHero.dead then return end
+      local mode = GetMode()
+      self:AutoGoldGate()
+      if mode == "Combo" and tb.Combo.Enable:Value() and MPpercent(myHero) >= tb.Combo.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
+            self:Combo()
+      elseif mode == "Harass" and tb.Harass.Enable:Value() and MPpercent(myHero) >= tb.Harass.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
+            self:Harass()
+      elseif mode == "Clear" and tb.Laneclear.Enable:Value() and MPpercent(myHero) >= tb.Laneclear.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
+            self:Laneclear()
+      elseif mode == "Flee" and tb.Flee.Enable:Value() and MPpercent(myHero) >= tb.Flee.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
+            self:Flee()
+      end
+end
+
+function TwistedFate:AutoGoldGate()
+      if Game.CanUseSpell(_W) == 0 and HasBuff(myHero,"gate") and tbTwistedFate.R.W:Value() then
+            local wName = myHero:GetSpellData(_W).name:lower()
+            if wName == W.select or wName == W.gold then
+                  Control.CastSpell(HK_W)
+            end
+      end
+end
+
+function TwistedFate:Combo()
+      local wName = myHero:GetSpellData(_W).name:lower()
+      if wName == W.gold then
+            Control.CastSpell(HK_W)
+      end
+      if tb.Combo.W:Value() then
+            local target = GetTarget(W.range,1)
+            self:Wlogic(target)
+      end
+      if tb.Combo.Q:Value() then
+            local target = GetTarget(Q.range,1)
+            self:Qlogic(target)
+      end
+end
+
+function TwistedFate:Harass()
+      local wName = myHero:GetSpellData(_W).name:lower()
+      if wName == W.gold then
+            Control.CastSpell(HK_W)
+      end
+      if tb.Harass.W:Value() then
+            local target = GetTarget(W.range,1)
+            self:Wlogic(target)
+      end
+      if tb.Harass.Q:Value() then
+            local target = GetTarget(Q.range,1)
+            self:Qlogic(target)
+      end
+end
+
+function TwistedFate:Laneclear()
+      local wName = myHero:GetSpellData(_W).name:lower()
+      if MPpercent(myHero) > tbTwistedFate.W.S:Value() and wName == W.red then
+            Control.CastSpell(HK_W)
+      elseif MPpercent(myHero) <= tbTwistedFate.W.S:Value() and wName == W.blue then
+            Control.CastSpell(HK_W)
+      end
+      
+      if tb.Laneclear.Q:Value() then
+            for i = 1, Game.MinionCount() do
+                  local minion = Game.Minion(i)
+                  if minion and minion.team ~= myHero.team and ValidTarget(minion) and GetMinionCollisionCount(myHero.pos, minion.pos, Q.radius, minion) + 1 >= tb.Laneclear.Minions:Value() then
+                        self:Qlogic(minion)
+                  end
+            end
+      end
+      if tb.Laneclear.W:Value() then
+            for i = 1, Game.MinionCount() do
+                  local minion = Game.Minion(i)
+                  if minion and minion.team ~= myHero.team and ValidTarget(minion) then
+                        self:Wlogic(minion)
+                  end
+            end
+      end
+end
+
+function TwistedFate:Flee()
+      local wName = myHero:GetSpellData(_W).name:lower()
+      if wName == W.gold then
+            Control.CastSpell(HK_W)
+      end
+      for i = 1, Game.HeroCount() do
+            local hero = Game.Hero(i)
+            if hero and hero.team ~= myHero.team and ValidTarget(hero) then
+                  if tb.Flee.W:Value() then
+                        self:Wlogic(hero)
+                  end
+                  if _G.SDK then
+                        if _G.SDK.Orbwalker:CanAttack() and HasBuff(myHero,"goldcardpreattack") and GetDistance(hero.pos,myHero.pos) <= W.range then
+                              Control.Attack(hero)
+                        end
+                  end
+            end
+      end
+end
+
+function TwistedFate:Qlogic(target)
+      if Game.CanUseSpell(_Q) == 0 then
+            if target and target.type == Obj_AI_Hero then
+                  if target.team ~= myHero.team and ValidTarget(target) then
+                        local CastPos, hitChance = GetPrediction(target, myHero.pos, Q)
+                        if hitChance and hitChance >= 2 and GetDistance(CastPos,myHero.pos) <= Q.range then
+                              if tbTwistedFate.Q.W:Value() and GetDistance(target.pos,myHero.pos) <= W.range then 
+                                    if myHero:GetSpellData(_W).currentCd <= 2 or not IsImmobile(target, 0) then
+                                          return
+                                    end
+                              end
+                              Control.CastSpell(HK_Q, CastPos)
+                        end
+                  end
+            end
+            if target and target.type == Obj_AI_Minion and GetDistance(target.pos,myHero.pos) <= Q.range then
+                  Control.CastSpell(HK_Q, target.pos)
+            end
+      end
+end
+
+function TwistedFate:Wlogic(target)
+      if Game.CanUseSpell(_W) == 0 then
+            local wName = myHero:GetSpellData(_W).name:lower()
+            if target and GetDistance(target.pos,myHero.pos) <= W.range and wName == W.select then
+                  Control.CastSpell(HK_W)
             end
       end
 end
@@ -1364,7 +1569,8 @@ end
 local range = {
       ["Kayle"] = {Q = 650, W = 900, E = 525 + myHero.boundingRadius + 35, R = 900},
       ["Quinn"] = {Q = 1025, W = 2100, E = 675, R = 0},
-      ["Teemo"] = {Q = 680, W = 0, E = 0, R = 0 },
+      ["Teemo"] = {Q = 680, W = 0, E = 0, R = 1 },
+      ["TwistedFate"] = {Q = 1450, W = myHero.range + myHero.boundingRadius + 35, E = 0, R = 5500},
       ["Vladimir"] = {Q = 600, W = 300, E = 600, R = 700},
 }
 
@@ -1422,7 +1628,7 @@ function TheBrutalizer:Draw()
       end
 
 	if myHero.dead then return end
-      if tb.Draw.Q.Enable:Value() and Game.CanUseSpell(_Q) == 0 then
+      if tb.Draw.Q.Enable:Value() and Game.CanUseSpell(_Q) == 0 and range[myHero.charName].Q > 0 then
             local Width = tb.Draw.Q.Width:Value()
             local Alpha = tb.Draw.Q.Alpha:Value()
             local Red = tb.Draw.Q.Red:Value()
@@ -1430,7 +1636,7 @@ function TheBrutalizer:Draw()
             local Blue = tb.Draw.Q.Blue:Value()
 		Draw.Circle(myHero.pos, range[myHero.charName].Q, Width, Draw.Color(Alpha,Red,Green,Blue))
 	end
-	if tb.Draw.W.Enable:Value() and Game.CanUseSpell(_W) == 0 then
+	if tb.Draw.W.Enable:Value() and Game.CanUseSpell(_W) == 0 and range[myHero.charName].W > 0 then
             local Width = tb.Draw.W.Width:Value()
             local Alpha = tb.Draw.W.Alpha:Value()
             local Red = tb.Draw.W.Red:Value()
@@ -1438,7 +1644,7 @@ function TheBrutalizer:Draw()
             local Blue = tb.Draw.W.Blue:Value()
 		Draw.Circle(myHero.pos, range[myHero.charName].W, Width, Draw.Color(Alpha,Red,Green,Blue))
 	end
-	if tb.Draw.E.Enable:Value() and Game.CanUseSpell(_E) == 0 then
+	if tb.Draw.E.Enable:Value() and Game.CanUseSpell(_E) == 0 and range[myHero.charName].E > 0 then
             local Width = tb.Draw.E.Width:Value()
             local Alpha = tb.Draw.E.Alpha:Value()
             local Red = tb.Draw.E.Red:Value()
@@ -1446,15 +1652,13 @@ function TheBrutalizer:Draw()
             local Blue = tb.Draw.E.Blue:Value()
 		Draw.Circle(myHero.pos, range[myHero.charName].E, Width, Draw.Color(Alpha,Red,Green,Blue))
       end
-      if tb.Draw.R.Enable:Value() and Game.CanUseSpell(_R) == 0 then
+      if tb.Draw.R.Enable:Value() and Game.CanUseSpell(_R) == 0 and range[myHero.charName].R > 0 then
             local Width = tb.Draw.R.Width:Value()
             local Alpha = tb.Draw.R.Alpha:Value()
             local Red = tb.Draw.R.Red:Value()
             local Green = tb.Draw.R.Green:Value()
             local Blue = tb.Draw.R.Blue:Value()
-            if myHero.charName ~= "Teemo" then
-                  Draw.Circle(myHero.pos, range[myHero.charName].R, Width, Draw.Color(Alpha,Red,Green,Blue))
-            else
+            if myHero.charName == "Teemo" then
                   local Rrange
                   if myHero:GetSpellData(_R).level == 1 then
                         Rrange = 400
@@ -1464,6 +1668,10 @@ function TheBrutalizer:Draw()
                         Rrange = 900
                   end
                   Draw.Circle(myHero.pos, Rrange, Width, Draw.Color(Alpha,Red,Green,Blue))
+            elseif myHero.charName == "TwistedFate" then
+                  Draw.CircleMinimap(myHero.pos, range[myHero.charName].R, Width - 1, Draw.Color(Alpha,Red,Green,Blue))
+            else
+                  Draw.Circle(myHero.pos, range[myHero.charName].R, Width, Draw.Color(Alpha,Red,Green,Blue))
             end
 	end
 end
