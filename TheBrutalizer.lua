@@ -489,41 +489,246 @@ require "MapPosition"
 --[[
     Localizations
 ]]
-local version = 0.5
+local version = 0.6
 
 local Icon = {
-      TB              = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TheBrutalizer.png",
+      TB                = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TheBrutalizer.png",
 
-      Kayle           = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/Kayle.png",
-      KayleQ          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/KayleQ.png",
-      KayleW          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/KayleW.png",
-      KayleE          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/KayleE.png",
-      KayleR          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/KayleR.png",
+      Chogath           = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/Chogath.png",
+      ChogathQ          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/ChogathQ.png",
+      ChogathW          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/ChogathW.png",
+      ChogathE          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/ChogathE.png",
+      ChogathR          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/ChogathR.png",
 
-      Quinn           = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/Quinn.png",
-      QuinnQ          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/QuinnQ.png",
-      QuinnW          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/QuinnW.png",
-      QuinnE          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/QuinnE.png",
-      QuinnR          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/QuinnR.png",
+      Kayle             = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/Kayle.png",
+      KayleQ            = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/KayleQ.png",
+      KayleW            = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/KayleW.png",
+      KayleE            = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/KayleE.png",
+      KayleR            = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/KayleR.png",
 
-      Teemo           = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/Teemo.png",
-      TeemoQ          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TeemoQ.png",
-      TeemoW          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TeemoW.png",
-      TeemoE          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TeemoE.png",
-      TeemoR          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TeemoR.png",
+      Quinn             = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/Quinn.png",
+      QuinnQ            = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/QuinnQ.png",
+      QuinnW            = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/QuinnW.png",
+      QuinnE            = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/QuinnE.png",
+      QuinnR            = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/QuinnR.png",
 
-      TwistedFate     = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TwistedFate.png",
-      TwistedFateQ    = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TwistedFateQ.png",
-      TwistedFateW    = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TwistedFateW.png",
-      TwistedFateE    = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TwistedFateE.png",
-      TwistedFateR    = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TwistedFateR.png",
+      Teemo             = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/Teemo.png",
+      TeemoQ            = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TeemoQ.png",
+      TeemoW            = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TeemoW.png",
+      TeemoE            = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TeemoE.png",
+      TeemoR            = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TeemoR.png",
 
-      Vladimir        = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/Vladimir.png",
-      VladimirQ       = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VladimirQ.png",
-      VladimirW       = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VladimirW.png",
-      VladimirE       = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VladimirE.png",
-      VladimirR       = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VladimirR.png",
+      TwistedFate       = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TwistedFate.png",
+      TwistedFateQ      = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TwistedFateQ.png",
+      TwistedFateW      = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TwistedFateW.png",
+      TwistedFateE      = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TwistedFateE.png",
+      TwistedFateR      = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TwistedFateR.png",
+
+      Vladimir          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/Vladimir.png",
+      VladimirQ         = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VladimirQ.png",
+      VladimirW         = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VladimirW.png",
+      VladimirE         = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VladimirE.png",
+      VladimirR         = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VladimirR.png",
 }
+
+--[[
+    Chogath
+]]
+class "Chogath"
+
+function Chogath:__init()
+      self:SetSpells()
+      self:Config()
+      function OnTick() self:Tick() end
+end
+	
+function Chogath:SetSpells()
+      Q = {range = 950, delay = 0.5, radius = 250, speed = math.huge}
+      W = {range = 650, delay = 0.5, radius = 210, speed = math.huge}
+      E = {range = myHero.range + myHero.boundingRadius + 35 + 50}
+      R = {range = 175 + myHero.boundingRadius + 35}
+end
+
+function Chogath:Config()
+      tbChogath = MenuElement({id = "tbChogath", name = "The Brutalizer: v"..version.." [Cho'Gath]", type = MENU, leftIcon = Icon.Chogath})
+
+      tbChogath:MenuElement({id = "Q", name = "Q - Rupture", leftIcon = Icon.ChogathQ, type = MENU})
+      tbChogath:MenuElement({id = "W", name = "W - Feral Scream", leftIcon = Icon.ChogathW, type = MENU})
+      tbChogath:MenuElement({id = "E", name = "E - Vorpal Spikes", leftIcon = Icon.ChogathE, type = MENU})
+      tbChogath:MenuElement({id = "R", name = "R - Feast", leftIcon = Icon.ChogathR, type = MENU})
+
+      tbChogath.Q:MenuElement({id = "", name = "...", type = SPACE})
+
+      tbChogath.W:MenuElement({id = "", name = "...", type = SPACE})
+
+      tbChogath.E:MenuElement({id = "AA", name = "Only after AA (if in range)", value = true})
+
+      tbChogath.R:MenuElement({id = "", name = "...", type = SPACE})
+end
+
+function Chogath:Tick()
+      if myHero.dead then return end
+      local mode = GetMode()
+      self:AutoR()
+      if mode == "Combo" and tb.Combo.Enable:Value() and MPpercent(myHero) >= tb.Combo.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
+            self:Combo()
+      elseif mode == "Harass" and tb.Harass.Enable:Value() and MPpercent(myHero) >= tb.Harass.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
+            self:Harass()
+      elseif mode == "Clear" and tb.Laneclear.Enable:Value() and MPpercent(myHero) >= tb.Laneclear.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
+            self:Laneclear()
+      elseif mode == "Lasthit" and tb.Lasthit.Enable:Value() and MPpercent(myHero) >= tb.Lasthit.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
+            self:Lasthit()
+      elseif mode == "Flee" and tb.Flee.Enable:Value() and MPpercent(myHero) >= tb.Flee.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
+            self:Flee()
+      end
+end
+
+function Chogath:AutoR()
+      if Game.CanUseSpell(_R) == 0 then
+            for i = 1, Game.HeroCount() do
+                  local hero = Game.Hero(i)
+                  local Rlevel = myHero:GetSpellData(_R).level
+                  local level = myHero.levelData.lvl
+                  local baseHealth = ({574.4, 632, 692.4, 755.6, 821.6, 890.4, 962, 1036.4, 1113.6, 1193.6, 1276.4, 1362, 1450.4, 1541.6, 1635.6, 1732.4, 1832, 1934.4})[level]
+                  local bonusHealth = myHero.maxHealth - baseHealth
+                  local baseDmg = ({300,475,650})[Rlevel]
+                  local damage = baseDmg + myHero.ap * 0.5 + bonusHealth * 0.1
+                  if hero and hero.team ~= myHero.team and ValidTarget(hero) and damage > hero.health then
+                        self:Rlogic(hero)
+                  end
+            end
+      end
+end
+
+function Chogath:Combo()
+      if tb.Combo.W:Value() then
+            local target = GetTarget(W.range,1)
+            self:Wlogic(target)
+      end
+      if tb.Combo.E:Value() then
+            local target = GetTarget(E.range,1)
+            self:Elogic(target)
+      end
+      if tb.Combo.Q:Value() then
+            local target = GetTarget(Q.range,1)
+            self:Qlogic(target)
+      end
+end
+
+function Chogath:Harass()
+      if tb.Harass.W:Value() then
+            local target = GetTarget(W.range,1)
+            self:Wlogic(target)
+      end
+      if tb.Harass.E:Value() then
+            local target = GetTarget(E.range,1)
+            self:Elogic(target)
+      end
+      if tb.Harass.Q:Value() then
+            local target = GetTarget(Q.range,1)
+            self:Qlogic(target)
+      end
+end
+
+function Chogath:Laneclear()
+      if tb.Laneclear.W:Value() then
+            for i = 1, Game.MinionCount() do
+                  local minion = Game.Minion(i)
+                  if minion and minion.team ~= myHero.team and ValidTarget(minion) and EnemyMinionsAround(minion.pos, W.radius) >= tb.Laneclear.Minions:Value() then
+                        self:Wlogic(minion)
+                  end
+            end
+      end
+      if tb.Laneclear.E:Value() then
+            for i = 1, Game.MinionCount() do
+                  local minion = Game.Minion(i)
+                  if minion and minion.team ~= myHero.team and ValidTarget(minion) then
+                        self:Elogic(minion)
+                  end
+            end
+      end
+      if tb.Laneclear.Q:Value() then
+            for i = 1, Game.MinionCount() do
+                  local minion = Game.Minion(i)
+                  if minion and minion.team ~= myHero.team and ValidTarget(minion) and EnemyMinionsAround(minion.pos, Q.radius) >= tb.Laneclear.Minions:Value() then
+                        self:Qlogic(minion)
+                  end
+            end
+      end
+end
+
+function Chogath:Lasthit()
+      if tb.Lasthit.R:Value() then
+            for i = 1, Game.MinionCount() do
+                  local minion = Game.Minion(i)
+                  local level = myHero.levelData.lvl
+                  local baseHealth = ({574.4, 632, 692.4, 755.6, 821.6, 890.4, 962, 1036.4, 1113.6, 1193.6, 1276.4, 1362, 1450.4, 1541.6, 1635.6, 1732.4, 1832, 1934.4})[level]
+                  local bonusHealth = myHero.maxHealth - baseHealth
+                  local damage = 1000 + myHero.ap * 0.5 + bonusHealth * 0.1
+                  if minion and minion.team ~= myHero.team and ValidTarget(minion) and damage > minion.health then
+                        self:Rlogic(minion)
+                  end
+            end
+      end
+end
+
+function Chogath:Flee()
+      if tb.Flee.Q:Value() then
+            for i = 1, Game.HeroCount() do
+                  local hero = Game.Hero(i)
+                  if hero and hero.team ~= myHero.team and ValidTarget(hero) then
+                        self:Qlogic(hero)
+                  end
+            end
+      end
+end
+
+function Chogath:Qlogic(target)
+      if Game.CanUseSpell(_Q) == 0 then
+            if target and target.type == Obj_AI_Hero then
+                  if target.team ~= myHero.team and ValidTarget(target) then
+                        local CastPos, hitChance = GetPrediction(target, myHero.pos, Q)
+                        if hitChance and hitChance >= 1 and GetDistance(CastPos,myHero.pos) <= Q.range then
+                              Control.CastSpell(HK_Q, CastPos)
+                        end
+                  end
+            end
+            if target and target.type == Obj_AI_Minion and GetDistance(target.pos,myHero.pos) <= Q.range then
+                  Control.CastSpell(HK_Q, target.pos)
+            end
+      end
+end
+
+function Chogath:Wlogic(target)
+      if Game.CanUseSpell(_W) == 0 then
+            if target and target.type == Obj_AI_Hero then
+                  if target.team ~= myHero.team and ValidTarget(target) then
+                        local CastPos, hitChance = GetPrediction(target, myHero.pos, W)
+                        if hitChance and hitChance >= 1 and GetDistance(CastPos,myHero.pos) <= W.range then
+                              Control.CastSpell(HK_W, CastPos)
+                        end
+                  end
+            end
+            if target and target.type == Obj_AI_Minion and GetDistance(target.pos,myHero.pos) <= W.range then
+                  Control.CastSpell(HK_W, target.pos)
+            end
+      end
+end
+
+function Chogath:Elogic(target)
+      if target and GetDistance(target.pos,myHero.pos) <= E.range and Game.CanUseSpell(_E) == 0 then
+            if tbChogath.E.AA:Value() and myHero.attackData.state ~= STATE_WINDDOWN and GetDistance(target.pos,myHero.pos) <= myHero.range + myHero.boundingRadius + 35 then
+                  return
+            end
+            Control.CastSpell(HK_E)
+      end
+end
+
+function Chogath:Rlogic(target)
+      if target and GetDistance(target.pos,myHero.pos) <= R.range and Game.CanUseSpell(_R) == 0 then
+            Control.CastSpell(HK_R,target)
+      end
+end
 
 --[[
     Kayle
@@ -640,7 +845,7 @@ end
 function Kayle:Combo()
       if tb.Combo.Q:Value() then
             local target = GetTarget(Q.range,1)
-            self:Qlogic(target,true)
+            self:Qlogic(target)
       end
       if tb.Combo.E:Value() then
             local target = GetTarget(E.range,1)
@@ -655,7 +860,7 @@ end
 function Kayle:Harass()
       if tb.Harass.Q:Value() then
             local target = GetTarget(Q.range,1)
-            self:Qlogic(target,true)
+            self:Qlogic(target)
       end
       if tb.Harass.E:Value() then
             local target = GetTarget(E.range,1)
@@ -672,7 +877,7 @@ function Kayle:Laneclear()
             for i = 1, Game.MinionCount() do
                   local minion = Game.Minion(i)
                   if minion and minion.team ~= myHero.team and ValidTarget(minion) then
-                        self:Qlogic(minion,false)
+                        self:Qlogic(minion)
                   end
             end
       end
@@ -693,7 +898,7 @@ function Kayle:Lasthit()
                   local level = myHero:GetSpellData(_Q).level
                   local damage = getdmg("Q",minion,myHero,1,level)
                   if minion and minion.team ~= myHero.team and ValidTarget(minion) and damage > minion.health then
-                        self:Qlogic(minion,false)
+                        self:Qlogic(minion)
                   end
             end
       end
@@ -704,7 +909,7 @@ function Kayle:Flee()
             for i = 1, Game.HeroCount() do
                   local hero = Game.Hero(i)
                   if hero and hero.team ~= myHero.team and ValidTarget(hero) then
-                        self:Qlogic(hero,false)
+                        self:Qlogic(hero)
                   end
             end
       end
@@ -713,7 +918,7 @@ function Kayle:Flee()
       end
 end
 
-function Kayle:Qlogic(target,check)
+function Kayle:Qlogic(target)
       if target and GetDistance(target.pos,myHero.pos) <= Q.range and Game.CanUseSpell(_Q) == 0 then
             if (myHero.ms >= target.ms and tbKayle.Q.MS:Value()) or (myHero.attackData.state ~= STATE_WINDDOWN and GetDistance(target.pos,myHero.pos) <= myHero.range + myHero.boundingRadius + 35) then
                   return
@@ -1041,7 +1246,7 @@ function Teemo:Flee()
       end
 end
 
-function Teemo:Qlogic(target,check)
+function Teemo:Qlogic(target)
       if target and GetDistance(target.pos,myHero.pos) <= Q.range and Game.CanUseSpell(_Q) == 0 then
             if tbTeemo.Q.AA:Value() and myHero.attackData.state ~= STATE_WINDDOWN and GetDistance(target.pos,myHero.pos) <= myHero.range + myHero.boundingRadius + 35 then
                   return
@@ -1567,6 +1772,7 @@ function TheBrutalizer:Config()
 end
 
 local range = {
+      ["Chogath"] = {Q = 950, W = 650, E = myHero.range + myHero.boundingRadius + 35 + 50, R = 175 + myHero.boundingRadius + 35},
       ["Kayle"] = {Q = 650, W = 900, E = 525 + myHero.boundingRadius + 35, R = 900},
       ["Quinn"] = {Q = 1025, W = 2100, E = 675, R = 0},
       ["Teemo"] = {Q = 680, W = 0, E = 0, R = 1 },
