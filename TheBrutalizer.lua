@@ -95,22 +95,22 @@ function HasBuff(unit, buffName)
 	return false
 end
 
-function MinionsAround(pos, range, team)
+function EnemyMinionsAround(pos, range)
       local Count = 0
       for i = 1, Game.MinionCount() do
             local minion = Game.Minion(i)
-            if minion and minion.team == team and ValidTarget(minion) and GetDistance(pos,minion.pos) <= range then
+            if minion and minion.team ~= myHero.team and ValidTarget(minion) and GetDistance(pos,minion.pos) <= range then
                   Count = Count + 1
             end
       end
       return Count
 end
 
-function HeroesAround(pos, range, team)
+function EnemyHeroesAround(pos, range)
       local Count = 0
 	for i = 1, Game.HeroCount() do
 		local hero = Game.Hero(i)
-		if hero and hero.team == team and not hero.dead and GetDistance(pos, hero.pos) < range then
+		if hero and hero.team ~= myHero.team and not hero.dead and GetDistance(pos, hero.pos) < range then
 			Count = Count + 1
 		end
 	end
@@ -539,15 +539,15 @@ function Kayle:Tick()
       if myHero.dead then return end
       local mode = GetMode()
       self:Auto()
-      if mode =="Combo" and tb.Combo.Enable:Value() and MPpercent(myHero) >= tb.Combo.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
+      if mode == "Combo" and tb.Combo.Enable:Value() and MPpercent(myHero) >= tb.Combo.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
             self:Combo()
-      elseif mode =="Harass" and tb.Harass.Enable:Value() and MPpercent(myHero) >= tb.Harass.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
+      elseif mode == "Harass" and tb.Harass.Enable:Value() and MPpercent(myHero) >= tb.Harass.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
             self:Harass()
-      elseif mode =="Clear" and tb.Laneclear.Enable:Value() and MPpercent(myHero) >= tb.Laneclear.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
+      elseif mode == "Clear" and tb.Laneclear.Enable:Value() and MPpercent(myHero) >= tb.Laneclear.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
             self:Laneclear()
-      elseif mode =="Lasthit" and tb.Lasthit.Enable:Value() and MPpercent(myHero) >= tb.Lasthit.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
+      elseif mode == "Lasthit" and tb.Lasthit.Enable:Value() and MPpercent(myHero) >= tb.Lasthit.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
             self:Lasthit()
-      elseif mode =="Flee" and tb.Flee.Enable:Value() and MPpercent(myHero) >= tb.Flee.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
+      elseif mode == "Flee" and tb.Flee.Enable:Value() and MPpercent(myHero) >= tb.Flee.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
             self:Flee()
       end
 end
@@ -562,7 +562,7 @@ function Kayle:Auto()
 end
 
 function Kayle:AutoR()
-      if HeroesAround(myHero.pos, 1600, 300 - myHero.team) ~= 0 then
+      if EnemyHeroesAround(myHero.pos, 1800) ~= 0 then
             if HPpercent(myHero) <= tbKayle.R.HP:Value() then
                   Control.CastSpell(HK_R, myHero)
             end
@@ -570,7 +570,7 @@ function Kayle:AutoR()
       for i = 1, Game.HeroCount() do
             local hero = Game.Hero(i)
             if hero and hero.team == myHero.team and ValidTarget(hero) and not hero.isMe and GetDistance(hero.pos,myHero.pos) <= R.range then
-                  if HeroesAround(hero.pos, 900, 300 - myHero.team) ~= 0 then
+                  if EnemyHeroesAround(hero.pos, 1800) ~= 0 then
                         if HPpercent(hero) <= tbKayle.R.AHP:Value() and tbKayle.R[hero.charName]:Value() then
                               Control.CastSpell(HK_R, hero)
                         end
@@ -580,7 +580,7 @@ function Kayle:AutoR()
 end
 
 function Kayle:AutoW()
-      if HeroesAround(myHero.pos, 1600, 300 - myHero.team) ~= 0 then
+      if EnemyHeroesAround(myHero.pos, 1800) ~= 0 then
             if HPpercent(myHero) <= tbKayle.W.HP:Value() then
                   Control.CastSpell(HK_W, myHero)
             end
@@ -588,7 +588,7 @@ function Kayle:AutoW()
       for i = 1, Game.HeroCount() do
             local hero = Game.Hero(i)
             if hero and hero.team == myHero.team and ValidTarget(hero) and not hero.isMe and GetDistance(hero.pos,myHero.pos) <= W.range then
-                  if HeroesAround(hero.pos, 900, 300 - myHero.team) ~= 0 then
+                  if EnemyHeroesAround(hero.pos, 1800) ~= 0 then
                         if HPpercent(hero) <= tbKayle.W.AHP:Value() and tbKayle.W[hero.charName]:Value() then
                               Control.CastSpell(HK_W, hero)
                         end
@@ -639,7 +639,7 @@ function Kayle:Laneclear()
       if tb.Laneclear.E:Value() then
             for i = 1, Game.MinionCount() do
                   local minion = Game.Minion(i)
-                  if minion and minion.team ~= myHero.team and ValidTarget(minion) and MinionsAround(minion.pos, E.spread, 300) + MinionsAround(minion.pos, E.spread, 300 - myHero.team) >= tb.Laneclear.Minions:Value() then
+                  if minion and minion.team ~= myHero.team and ValidTarget(minion) and EnemyMinionsAround(minion.pos, E.spread) >= tb.Laneclear.Minions:Value() then
                         self:Elogic(minion)
                   end
             end
@@ -652,7 +652,7 @@ function Kayle:Lasthit()
                   local minion = Game.Minion(i)
                   local level = myHero:GetSpellData(_Q).level
                   local damage = getdmg("Q",minion,myHero,1,level)
-                  if minion and minion.team == 300 - myHero.team and ValidTarget(minion) and damage > minion.health then
+                  if minion and minion.team ~= myHero.team and ValidTarget(minion) and damage > minion.health then
                         self:Qlogic(minion,false)
                   end
             end
@@ -663,7 +663,7 @@ function Kayle:Flee()
       if tb.Flee.Q:Value() then
             for i = 1, Game.HeroCount() do
                   local hero = Game.Hero(i)
-                  if hero and hero.team == 300 - myHero.team and ValidTarget(hero) then
+                  if hero and hero.team ~= myHero.team and ValidTarget(hero) then
                         self:Qlogic(hero,false)
                   end
             end
@@ -735,12 +735,14 @@ end
 function Quinn:Tick()
       if myHero.dead then return end
       local mode = GetMode()
-      if mode =="Combo" and tb.Combo.Enable:Value() and myHero.attackData.state ~= STATE_WINDUP then
+      if mode == "Combo" and tb.Combo.Enable:Value() and myHero.attackData.state ~= STATE_WINDUP then
             self:Combo()
-      elseif mode =="Harass" and tb.Harass.Enable:Value() and myHero.attackData.state ~= STATE_WINDUP then
+      elseif mode == "Harass" and tb.Harass.Enable:Value() and myHero.attackData.state ~= STATE_WINDUP then
             self:Harass()
-      elseif mode =="Clear" and tb.Laneclear.Enable:Value() and myHero.attackData.state ~= STATE_WINDUP then
+      elseif mode == "Clear" and tb.Laneclear.Enable:Value() and myHero.attackData.state ~= STATE_WINDUP then
             self:Laneclear()
+      elseif mode == "Flee" and tb.Flee.Enable:Value() and myHero.attackData.state ~= STATE_WINDUP then
+            self:Flee()
       end
 end
 
@@ -773,11 +775,30 @@ function Quinn:Harass()
 end
 
 function Quinn:Laneclear()
+      if tb.Laneclear.E:Value() then
+            for i = 1, Game.MinionCount() do
+                  local minion = Game.Minion(i)
+                  if minion and minion.team == 300 and ValidTarget(minion) then
+                        self:Elogic(minion)
+                  end
+            end
+      end
       if tb.Laneclear.Q:Value() then
             for i = 1, Game.MinionCount() do
                   local minion = Game.Minion(i)
-                  if minion and minion.team ~= myHero.team and ValidTarget(minion) and MinionsAround(minion.pos, Q.effectradius, 300) + MinionsAround(minion.pos, Q.effectradius, 300 - myHero.team) >= tb.Laneclear.Minions:Value() then
+                  if minion and minion.team ~= myHero.team and ValidTarget(minion) and EnemyMinionsAround(minion.pos, Q.effectradius) >= tb.Laneclear.Minions:Value() then
                         self:Qlogic(minion)
+                  end
+            end
+      end
+end
+
+function Quinn:Flee()
+      if tb.Flee.Q:Value() then
+            for i = 1, Game.HeroCount() do
+                  local hero = Game.Hero(i)
+                  if hero and hero.team ~= myHero.team and ValidTarget(hero) then
+                        self:Qlogic(hero)
                   end
             end
       end
@@ -882,13 +903,15 @@ end
 function Teemo:Tick()
       if myHero.dead then return end
       local mode = GetMode()
-      if mode =="Combo" and tb.Combo.Enable:Value() and MPpercent(myHero) >= tb.Combo.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
+      if mode == "Combo" and tb.Combo.Enable:Value() and MPpercent(myHero) >= tb.Combo.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
             self:Combo()
-      elseif mode =="Harass" and tb.Harass.Enable:Value() and MPpercent(myHero) >= tb.Harass.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
+      elseif mode == "Harass" and tb.Harass.Enable:Value() and MPpercent(myHero) >= tb.Harass.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
             self:Harass()
-      elseif mode =="Lasthit" and tb.Lasthit.Enable:Value() and MPpercent(myHero) >= tb.Lasthit.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
+      elseif mode == "Clear" and tb.Laneclear.Enable:Value() and MPpercent(myHero) >= tb.Laneclear.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
+            self:Laneclear()
+      elseif mode == "Lasthit" and tb.Lasthit.Enable:Value() and MPpercent(myHero) >= tb.Lasthit.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
             self:Lasthit()
-      elseif mode =="Flee" and tb.Flee.Enable:Value() and MPpercent(myHero) >= tb.Flee.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
+      elseif mode == "Flee" and tb.Flee.Enable:Value() and MPpercent(myHero) >= tb.Flee.Mana:Value() and myHero.attackData.state ~= STATE_WINDUP then
             self:Flee()
       end
 end
@@ -937,6 +960,25 @@ function Teemo:Harass()
       end 
 end
 
+function Teemo:Laneclear()
+      if tb.Laneclear.Q:Value() then
+            for i = 1, Game.MinionCount() do
+                  local minion = Game.Minion(i)
+                  if minion and minion.team == 300 and ValidTarget(minion) then
+                        self:Qlogic(minion)
+                  end
+            end
+      end
+      if tb.Laneclear.R:Value() then
+            for i = 1, Game.MinionCount() do
+                  local minion = Game.Minion(i)
+                  if minion and minion.team ~= myHero.team and ValidTarget(minion) and MinionsAround(minion.pos, R.radius, 300) + MinionsAround(minion.pos, R.radius, 300 - myHero.team) >= tb.Laneclear.Minions:Value() then
+                        self:Rlogic(minion)
+                  end
+            end
+      end
+end
+
 function Teemo:Lasthit()
       if tb.Lasthit.Q:Value() then
             for i = 1, Game.MinionCount() do
@@ -954,7 +996,7 @@ function Teemo:Flee()
       if tb.Flee.W:Value() and Game.CanUseSpell(_W) == 0 then
             Control.CastSpell(HK_W)
       end
-      if tb.Flee.R:Value() and Game.CanUseSpell(_R) == 0 then
+      if tb.Flee.R:Value() and Game.CanUseSpell(_R) == 0 and EnemyHeroesAround(myHero.pos, 450) ~= 0 then
             Control.CastSpell(HK_R,myHero)
       end
 end
@@ -1046,14 +1088,16 @@ function Vladimir:Tick()
       if myHero.dead then return end
       self:AutoR()
       local mode = GetMode()
-      if mode =="Combo" and tb.Combo.Enable:Value() and myHero.attackData.state ~= STATE_WINDUP and not Control.IsKeyDown(HK_E) then
+      if mode == "Combo" and tb.Combo.Enable:Value() and myHero.attackData.state ~= STATE_WINDUP and not Control.IsKeyDown(HK_E) then
             self:Combo()
-      elseif mode =="Harass" and tb.Harass.Enable:Value() and myHero.attackData.state ~= STATE_WINDUP and not Control.IsKeyDown(HK_E) then
+      elseif mode == "Harass" and tb.Harass.Enable:Value() and myHero.attackData.state ~= STATE_WINDUP and not Control.IsKeyDown(HK_E) then
             self:Harass()
-      elseif mode =="Clear" and tb.Laneclear.Enable:Value() and myHero.attackData.state ~= STATE_WINDUP and not Control.IsKeyDown(HK_E) then
+      elseif mode == "Clear" and tb.Laneclear.Enable:Value() and myHero.attackData.state ~= STATE_WINDUP and not Control.IsKeyDown(HK_E) then
             self:Laneclear()
-      elseif mode =="Lasthit" and tb.Lasthit.Enable:Value() and myHero.attackData.state ~= STATE_WINDUP and not Control.IsKeyDown(HK_E) then
+      elseif mode == "Lasthit" and tb.Lasthit.Enable:Value() and myHero.attackData.state ~= STATE_WINDUP and not Control.IsKeyDown(HK_E) then
             self:Lasthit()
+      elseif mode == "Flee" and tb.Flee.Enable:Value() and myHero.attackData.state ~= STATE_WINDUP and not Control.IsKeyDown(HK_E) then
+            self:Flee()
       end
 
       if not HasBuff(myHero,"vladimire") and Control.IsKeyDown(HK_E) and Game.Timer() - self.startedE >= 1 then
@@ -1071,10 +1115,6 @@ function Vladimir:Combo()
       if tb.Combo.R:Value() then
             self:Rlogic()
       end
-      if tb.Combo.E:Value() then
-            local target = GetTarget(E.range,1)
-            self:Elogic(target)
-      end
       if tb.Combo.Q:Value() then
             local target = GetTarget(Q.range,1)
             self:Qlogic(target)
@@ -1083,15 +1123,15 @@ function Vladimir:Combo()
             local target = GetTarget(W.range,1)
             self:Wlogic(target)
       end
+      if tb.Combo.E:Value() then
+            local target = GetTarget(E.range,1)
+            self:Elogic(target)
+      end
 end
 
 function Vladimir:Harass()
       if tb.Harass.R:Value() then
             self:Rlogic()
-      end
-      if tb.Harass.E:Value() then
-            local target = GetTarget(E.range,1)
-            self:Elogic(target)
       end
       if tb.Harass.Q:Value() then
             local target = GetTarget(Q.range,1)
@@ -1100,6 +1140,10 @@ function Vladimir:Harass()
       if tb.Harass.W:Value() then
             local target = GetTarget(W.range,1)
             self:Wlogic(target)
+      end
+      if tb.Harass.E:Value() then
+            local target = GetTarget(E.range,1)
+            self:Elogic(target)
       end
 end
 
@@ -1115,7 +1159,7 @@ function Vladimir:Laneclear()
       if tb.Laneclear.E:Value() then
             for i = 1, Game.MinionCount() do
                   local minion = Game.Minion(i)
-                  if minion and minion.team ~= myHero.team and ValidTarget(minion) and MinionsAround(myHero.pos, E.range, 300) + MinionsAround(myHero.pos, E.range, 300 - myHero.team) >= tb.Laneclear.Minions:Value() then
+                  if minion and minion.team ~= myHero.team and ValidTarget(minion) and EnemyMinionsAround(myHero.pos, E.range) >= tb.Laneclear.Minions:Value() then
                         self:Elogic(minion)
                   end
             end
@@ -1132,6 +1176,12 @@ function Vladimir:Lasthit()
                         self:Qlogic(minion)
                   end
             end
+      end
+end
+
+function Vladimir:Flee()
+      if tb.Flee.W:Value() and Game.CanUseSpell(_W) == 0 and EnemyHeroesAround(myHero.pos, W.range) ~= 0 then
+            Control.CastSpell(HK_W)
       end
 end
 
