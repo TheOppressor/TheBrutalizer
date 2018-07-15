@@ -688,8 +688,9 @@ function Chogath:Qlogic(target)
             if target and target.type == Obj_AI_Hero then
                   if target.team ~= myHero.team and ValidTarget(target) then
                         local CastPos, hitChance = GetPrediction(target, myHero.pos, Q)
-                        if hitChance and hitChance >= 1 and GetDistance(CastPos,myHero.pos) <= Q.range then
-                              Control.CastSpell(HK_Q, CastPos)
+                        local pred = target:GetPrediction(Q.speed, Q.delay)
+                        if hitChance and hitChance >= 1 and GetDistance(pred,myHero.pos) <= Q.range then
+                              Control.CastSpell(HK_Q, pred)
                         end
                   end
             end
