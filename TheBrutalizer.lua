@@ -524,12 +524,6 @@ local Icon = {
       TwistedFateE      = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TwistedFateE.png",
       TwistedFateR      = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TwistedFateR.png",
 
-      Veigar          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/Veigar.png",
-      VeigarQ         = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VeigarQ.png",
-      VeigarW         = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VeigarW.png",
-      VeigarE         = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VeigarE.png",
-      VeigarR         = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VeigarR.png",
-
       Vladimir          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/Vladimir.png",
       VladimirQ         = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VladimirQ.png",
       VladimirW         = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VladimirW.png",
@@ -694,7 +688,7 @@ function Chogath:Qlogic(target)
             if target and target.type == Obj_AI_Hero then
                   if target.team ~= myHero.team and ValidTarget(target) then
                         local CastPos, hitChance = GetPrediction(target, myHero.pos, Q)
-                        if hitChance and hitChance >= 1 and GetDistance(CastPos,myHero.pos) <= Q.range then
+                        if hitChance and hitChance >= 2 and GetDistance(CastPos,myHero.pos) <= Q.range then
                               Control.CastSpell(HK_Q, CastPos)
                         end
                   end
@@ -710,7 +704,7 @@ function Chogath:Wlogic(target)
             if target and target.type == Obj_AI_Hero then
                   if target.team ~= myHero.team and ValidTarget(target) then
                         local CastPos, hitChance = GetPrediction(target, myHero.pos, W)
-                        if hitChance and hitChance >= 1 and GetDistance(CastPos,myHero.pos) <= W.range then
+                        if hitChance and hitChance >= 2 and GetDistance(CastPos,myHero.pos) <= W.range then
                               Control.CastSpell(HK_W, CastPos)
                         end
                   end
@@ -1287,7 +1281,7 @@ function Teemo:Rlogic(target)
             if target.type == Obj_AI_Hero then
                   if target.team ~= myHero.team and ValidTarget(target) then
                         local CastPos, hitChance = GetPrediction(target, myHero.pos, R)
-                        if hitChance and hitChance >= 1 and GetDistance(CastPos,myHero.pos) <= Rrange then
+                        if hitChance and hitChance >= 2 and GetDistance(CastPos,myHero.pos) <= Rrange then
                               Control.CastSpell(HK_R, CastPos)
                         end
                   end
@@ -1311,7 +1305,7 @@ end
 
 function TwistedFate:SetSpells()
       Q = {range = 1450, delay = 0.25, radius = 40, speed = 1000}
-      W = {range = myHero.range + myHero.boundingRadius + 185, red = "redcardlock", blue = "bluecardlock", gold = "goldcardlock", select = "pickacard"}
+      W = {range = 1100, red = "redcardlock", blue = "bluecardlock", gold = "goldcardlock", select = "pickacard"}
       E = {range = 0}
       R = {range = 0}
 end
