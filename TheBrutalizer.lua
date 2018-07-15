@@ -524,6 +524,12 @@ local Icon = {
       TwistedFateE      = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TwistedFateE.png",
       TwistedFateR      = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/TwistedFateR.png",
 
+      Veigar          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/Veigar.png",
+      VeigarQ         = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VeigarQ.png",
+      VeigarW         = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VeigarW.png",
+      VeigarE         = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VeigarE.png",
+      VeigarR         = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VeigarR.png",
+
       Vladimir          = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/Vladimir.png",
       VladimirQ         = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VladimirQ.png",
       VladimirW         = "https://raw.githubusercontent.com/TheOppressor/TheBrutalizer/master/Icon/VladimirW.png",
@@ -1305,7 +1311,7 @@ end
 
 function TwistedFate:SetSpells()
       Q = {range = 1450, delay = 0.25, radius = 40, speed = 1000}
-      W = {range = myHero.range + myHero.boundingRadius + 35, red = "redcardlock", blue = "bluecardlock", gold = "goldcardlock", select = "pickacard"}
+      W = {range = myHero.range + myHero.boundingRadius + 185, red = "redcardlock", blue = "bluecardlock", gold = "goldcardlock", select = "pickacard"}
       E = {range = 0}
       R = {range = 0}
 end
