@@ -610,7 +610,7 @@ function Chogath:Combo()
             self:Wlogic(target)
       end
       if tb.Combo.E:Value() then
-            local target = GetTarget(E.range,1)
+            local target = GetTarget(myHero.range + myHero.boundingRadius + 35 + 50,1)
             self:Elogic(target)
       end
 end
@@ -625,7 +625,7 @@ function Chogath:Harass()
             self:Wlogic(target)
       end
       if tb.Harass.E:Value() then
-            local target = GetTarget(E.range,1)
+            local target = GetTarget(myHero.range + myHero.boundingRadius + 35 + 50,1)
             self:Elogic(target)
       end
 end
@@ -717,7 +717,7 @@ function Chogath:Wlogic(target)
 end
 
 function Chogath:Elogic(target)
-      if target and GetDistance(target.pos,myHero.pos) <= E.range and Game.CanUseSpell(_E) == 0 then
+      if target and GetDistance(target.pos,myHero.pos) <= myHero.range + myHero.boundingRadius + 35 + 50 and Game.CanUseSpell(_E) == 0 then
             if tbChogath.E.AA:Value() and myHero.attackData.state ~= STATE_WINDDOWN and GetDistance(target.pos,myHero.pos) <= myHero.range + myHero.boundingRadius + 35 then
                   return
             end
@@ -726,7 +726,7 @@ function Chogath:Elogic(target)
 end
 
 function Chogath:Rlogic(target)
-      if target and GetDistance(target.pos,myHero.pos) <= R.range and Game.CanUseSpell(_R) == 0 then
+      if target and GetDistance(target.pos,myHero.pos) <= 175 + myHero.boundingRadius + 35 and Game.CanUseSpell(_R) == 0 then
             Control.CastSpell(HK_R,target)
       end
 end
