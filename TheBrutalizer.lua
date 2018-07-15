@@ -543,7 +543,7 @@ function Chogath:__init()
 end
 	
 function Chogath:SetSpells()
-      Q = {range = 950, delay = 0.5, radius = 250, speed = math.huge}
+      Q = {range = 950, delay = 0.625, radius = 250, speed = math.huge}
       W = {range = 650, delay = 0.5, radius = 210, speed = math.huge}
       E = {range = myHero.range + myHero.boundingRadius + 35 + 50}
       R = {range = 175 + myHero.boundingRadius + 35}
@@ -601,6 +601,10 @@ function Chogath:AutoR()
 end
 
 function Chogath:Combo()
+      if tb.Combo.Q:Value() then
+            local target = GetTarget(Q.range,1)
+            self:Qlogic(target)
+      end
       if tb.Combo.W:Value() then
             local target = GetTarget(W.range,1)
             self:Wlogic(target)
@@ -609,13 +613,13 @@ function Chogath:Combo()
             local target = GetTarget(E.range,1)
             self:Elogic(target)
       end
-      if tb.Combo.Q:Value() then
-            local target = GetTarget(Q.range,1)
-            self:Qlogic(target)
-      end
 end
 
 function Chogath:Harass()
+      if tb.Harass.Q:Value() then
+            local target = GetTarget(Q.range,1)
+            self:Qlogic(target)
+      end
       if tb.Harass.W:Value() then
             local target = GetTarget(W.range,1)
             self:Wlogic(target)
@@ -623,10 +627,6 @@ function Chogath:Harass()
       if tb.Harass.E:Value() then
             local target = GetTarget(E.range,1)
             self:Elogic(target)
-      end
-      if tb.Harass.Q:Value() then
-            local target = GetTarget(Q.range,1)
-            self:Qlogic(target)
       end
 end
 
@@ -688,7 +688,7 @@ function Chogath:Qlogic(target)
             if target and target.type == Obj_AI_Hero then
                   if target.team ~= myHero.team and ValidTarget(target) then
                         local CastPos, hitChance = GetPrediction(target, myHero.pos, Q)
-                        if hitChance and hitChance >= 2 and GetDistance(CastPos,myHero.pos) <= Q.range then
+                        if hitChance and hitChance >= 1 and GetDistance(CastPos,myHero.pos) <= Q.range then
                               Control.CastSpell(HK_Q, CastPos)
                         end
                   end
@@ -704,7 +704,7 @@ function Chogath:Wlogic(target)
             if target and target.type == Obj_AI_Hero then
                   if target.team ~= myHero.team and ValidTarget(target) then
                         local CastPos, hitChance = GetPrediction(target, myHero.pos, W)
-                        if hitChance and hitChance >= 2 and GetDistance(CastPos,myHero.pos) <= W.range then
+                        if hitChance and hitChance >= 1 and GetDistance(CastPos,myHero.pos) <= W.range then
                               Control.CastSpell(HK_W, CastPos)
                         end
                   end
