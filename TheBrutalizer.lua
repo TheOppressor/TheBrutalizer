@@ -543,7 +543,7 @@ function Chogath:__init()
 end
 	
 function Chogath:SetSpells()
-      Q = {range = 950, delay = 0.625, radius = 250, speed = math.huge}
+      Q = {range = 950, delay = 0.825, radius = 250, speed = math.huge}
       W = {range = 650, delay = 0.5, radius = 210, speed = math.huge}
       E = {range = myHero.range + myHero.boundingRadius + 35 + 50}
       R = {range = 175 + myHero.boundingRadius + 35}
@@ -1857,7 +1857,11 @@ function TheBrutalizer:Draw()
             local Red = tb.Draw.E.Red:Value()
             local Green = tb.Draw.E.Green:Value()
             local Blue = tb.Draw.E.Blue:Value()
-		Draw.Circle(myHero.pos, range[myHero.charName].E, Width, Draw.Color(Alpha,Red,Green,Blue))
+            if myHero.charName == "Chogath" then
+                  Draw.Circle(myHero.pos, myHero.range + myHero.boundingRadius + 35 + 50, Width, Draw.Color(Alpha,Red,Green,Blue))
+            else
+                  Draw.Circle(myHero.pos, range[myHero.charName].E, Width, Draw.Color(Alpha,Red,Green,Blue))
+            end
       end
       if tb.Draw.R.Enable:Value() and Game.CanUseSpell(_R) == 0 and range[myHero.charName].R > 0 then
             local Width = tb.Draw.R.Width:Value()
@@ -1865,7 +1869,9 @@ function TheBrutalizer:Draw()
             local Red = tb.Draw.R.Red:Value()
             local Green = tb.Draw.R.Green:Value()
             local Blue = tb.Draw.R.Blue:Value()
-            if myHero.charName == "Teemo" then
+            if myHero.charName == "Chogath" then
+                  Draw.Circle(myHero.pos, 175 + myHero.boundingRadius + 35, Width, Draw.Color(Alpha,Red,Green,Blue))
+            elseif myHero.charName == "Teemo" then
                   local Rrange
                   if myHero:GetSpellData(_R).level == 1 then
                         Rrange = 400
